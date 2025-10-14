@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "unitrack-app",
-    "slug": "unitrack-app",
+    "slug": "unitrack",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -43,6 +43,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d9aca583-e0d0-48b4-a509-61d5132b1c00"
+      }
+    },
+    "owner": "biodun42"
   }
 }
