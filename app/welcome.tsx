@@ -1,16 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import { useEffect, useRef, useState } from "react";
-import {
-  Animated,
-  Easing,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
-import LanguageSelector from "../components/LanguageSelector";
-import { useTranslatedTexts } from "../hooks/useTranslation";
+import { useRef, useState } from "react";
+import { Dimensions, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import SideSwipe from "react-native-sideswipe";
+
+const { width } = Dimensions.get("window");
 
 const onboardingData = [
   {
@@ -39,34 +34,29 @@ const onboardingData = [
   },
 ];
 
+function OnboardingSlide({ item }: { item: (typeof onboardingData)[0] }) {
+  return (
+    <View style={{ width }} className="px-8">
+      <Text className="text-gray-900 text-2xl font-bold text-center mb-4 leading-tight">
+        {item.titleKey}
+      </Text>
+      <Text className="text-gray-600 text-sm text-center leading-6">
+        {item.descriptionKey}
+      </Text>
+    </View>
+  );
+}
+
 export default function WelcomeScreen() {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const sideSwipeRef = useRef(null);
 
-  // Get current item data
-  const currentItem = onboardingData[currentIndex];
-
-  // Translate all texts for current slide
-  const [translatedTitle, translatedDescription, continueText, getStartedText] =
-    useTranslatedTexts([
-      currentItem.titleKey,
-      currentItem.descriptionKey,
-      "Continue",
-      "Get Started",
-    ]);
-
-  // Continuous rotation animation
-  useEffect(() => {
-    Animated.loop(
-      Animated.timing(rotateAnim, {
-        toValue: 1,
-        duration: 8000,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      })
-    ).start();
-  }, [rotateAnim]);
+  // Static button texts
+  const nextText = "Next";
+  const getStartedText = "Get Started";
+  const skipText = "Skip";
+  const backText = "Back";
 
   const handleNext = async () => {
     if (currentIndex < onboardingData.length - 1) {
@@ -82,71 +72,143 @@ export default function WelcomeScreen() {
     }
   };
 
-  const spin = rotateAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
-  });
+  const handleBack = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const handleSkip = async () => {
+    try {
+      await AsyncStorage.setItem("@unitrack_has_seen_onboarding", "true");
+    } catch (error) {
+      console.error("Error saving onboarding status:", error);
+    }
+    router.replace("/auth");
+  };
+
+  const renderItem = ({ itemIndex }: any) => {
+    const item = onboardingData[itemIndex];
+    return <OnboardingSlide item={item} />;
+  };
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
-      {/* Language Selector - Top Right */}
-      <View className="absolute top-2 right-6 z-10">
-        <LanguageSelector />
-      </View>
-
-      {/* Main Image */}
-      <View className="flex-1 items-center justify-start pt-20">
-        <View className="w-80 h-96 items-center justify-center">
-          <Animated.Image
-            source={require("../assets/images/logoWhite.png")}
-            className="w-40 h-40"
-            resizeMode="contain"
-            style={{
-              transform: [{ rotate: spin }],
-            }}
-          />
-        </View>
-      </View>
-
-      {/* Content Section */}
-      <View className="px-8 pb-12">
-        {/* Title - Translated */}
-        <Text className="text-white text-4xl font-bold mb-4 leading-tight">
-          {translatedTitle}
-        </Text>
-
-        {/* Description - Translated */}
-        <Text className="text-gray-400 text-base leading-6 mb-8">
-          {translatedDescription}
-        </Text>
-
-        {/* Pagination Dots */}
-        <View className="flex-row mb-8">
-          {onboardingData.map((_, index) => (
-            <View
-              key={index}
-              className={`h-1 rounded-full mr-2 ${
-                index === currentIndex ? "w-8 bg-white" : "w-1 bg-gray-600"
-              }`}
-            />
-          ))}
+    <SafeAreaView className="flex-1 bg-black" edges={["top", "bottom"]}>
+      <View className="flex-1">
+        {/* Top Bar */}
+        <View className="flex-row justify-end items-center px-6 pt-4 pb-2">
+          {/* Skip Button - Top Right */}
+          <Pressable onPress={handleSkip} className="py-2 px-4">
+            <Text className="text-white text-base font-medium">{skipText}</Text>
+          </Pressable>
         </View>
 
-        {/* Continue Button - Translated */}
-        <Pressable
-          onPress={handleNext}
-          className="bg-white rounded-full py-4 items-center active:opacity-80"
+        {/* Black Background Section with Logo */}
+        <View className="flex-1 items-center justify-center px-6">
+          <View className="items-center">
+            <View className="w-72 h-72 items-center justify-center mb-8">
+              <Image
+                source={require("../assets/images/logoWhite.png")}
+                className="w-56 h-56"
+                resizeMode="contain"
+              />
+            </View>
+          </View>
+        </View>
+
+        {/* UNITRACK Text Above White Card */}
+        <View
+          className="items-center shadow-lg mb-4"
+          style={{ marginBottom: -18, zIndex: 10 }}
         >
-          <Text className="text-black text-lg font-semibold">
-            {currentIndex === onboardingData.length - 1
-              ? getStartedText
-              : continueText}
-          </Text>
-        </Pressable>
-      </View>
+          <View className="bg-black px-8 py-2 rounded-full">
+            <Text className="text-white text-xl font-bold tracking-wider">
+              UNITRACK
+            </Text>
+          </View>
+        </View>
 
-      {/* Bottom Safe Area */}
-      <View className="h-8" />
+        {/* White Bottom Card with SideSwipe */}
+        <View className="bg-white rounded-t-[40px] pt-10 pb-8">
+          {/* SideSwipe Carousel */}
+          <View style={{ height: 120 }}>
+            <SideSwipe
+              ref={sideSwipeRef}
+              index={currentIndex}
+              itemWidth={width}
+              style={{ width }}
+              data={onboardingData}
+              contentOffset={0}
+              onIndexChange={(index: number) => setCurrentIndex(index)}
+              renderItem={renderItem}
+              useVelocityForIndex={false}
+            />
+          </View>
+
+          {/* Pagination Dots */}
+          <View className="flex-row justify-center mb-8 px-8">
+            {onboardingData.map((_, index) => (
+              <View
+                key={index}
+                className={`h-2 rounded-full mx-1 ${
+                  index === currentIndex ? "w-8 bg-black" : "w-2 bg-gray-300"
+                }`}
+              />
+            ))}
+          </View>
+
+          {/* Navigation Buttons */}
+          <View className="px-8">
+            {currentIndex > 0 ? (
+              // Show Back and Next buttons side by side
+              <View className="flex-row gap-3">
+                <Pressable
+                  onPress={handleBack}
+                  className="flex-1 bg-gray-200 rounded-full py-4 items-center active:opacity-80"
+                >
+                  <Text className="text-gray-900 text-base font-bold">
+                    {backText}
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={handleNext}
+                  className="flex-1 bg-black rounded-full py-4 items-center active:opacity-90 shadow-lg"
+                  style={{
+                    shadowColor: "#000000",
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 8,
+                    elevation: 8,
+                  }}
+                >
+                  <Text className="text-white text-base font-bold">
+                    {currentIndex === onboardingData.length - 1
+                      ? getStartedText
+                      : nextText}
+                  </Text>
+                </Pressable>
+              </View>
+            ) : (
+              // Show only Next button on first slide
+              <Pressable
+                onPress={handleNext}
+                className="bg-black rounded-full py-4 items-center active:opacity-90 shadow-lg"
+                style={{
+                  shadowColor: "#000000",
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 8,
+                  elevation: 8,
+                }}
+              >
+                <Text className="text-white text-base font-bold">
+                  {nextText}
+                </Text>
+              </Pressable>
+            )}
+          </View>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }

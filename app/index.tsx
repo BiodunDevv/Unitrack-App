@@ -3,38 +3,49 @@ import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { ActivityIndicator, Image, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuthStore } from "../store/useAuthStore";
 
 const HAS_SEEN_ONBOARDING = "@unitrack_has_seen_onboarding";
 
 export default function SplashScreen() {
   const router = useRouter();
+  const { isAuthenticated, user, isLoading } = useAuthStore();
 
   useEffect(() => {
-    const checkOnboarding = async () => {
+    const checkAppState = async () => {
       try {
+        // Wait for auth store to finish loading
+        if (isLoading) return;
+
+        // Check if user is already authenticated
+        if (isAuthenticated && user) {
+          // Navigate authenticated users to current-user page
+          setTimeout(() => {
+            router.replace("/current-user");
+          }, 2500);
+          return;
+        }
+
+        // Not authenticated, check onboarding status
         const hasSeen = await AsyncStorage.getItem(HAS_SEEN_ONBOARDING);
 
-        // Navigate after delay
         setTimeout(() => {
           if (hasSeen === "true") {
-            // User has seen onboarding, go directly to auth
             router.replace("/auth");
           } else {
-            // First time user, show welcome/onboarding
             router.replace("/welcome");
           }
         }, 2500);
       } catch (error) {
-        console.error("Error checking onboarding status:", error);
-        // Default to showing welcome on error
+        console.error("Error checking app state:", error);
         setTimeout(() => {
           router.replace("/welcome");
         }, 2500);
       }
     };
 
-    checkOnboarding();
-  }, [router]);
+    checkAppState();
+  }, [router, isAuthenticated, user, isLoading]);
 
   return (
     <SafeAreaView className="flex-1 bg-white">

@@ -7,8 +7,8 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
-import TranslationToast from "../components/TranslationToast";
-import useTranslationStore from "../store/useTranslationStore";
+import Toast from "react-native-toast-message";
+import { useAuthStore } from "../store/useAuthStore";
 import "./../global.css";
 
 export const unstable_settings = {
@@ -17,12 +17,12 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const initialize = useTranslationStore((state) => state.initialize);
+  const checkAuth = useAuthStore((state) => state.checkAuth);
 
-  // Initialize translation store on app start
+  // Initialize stores on app start
   useEffect(() => {
-    initialize();
-  }, []);
+    checkAuth();
+  }, [checkAuth]);
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
@@ -33,10 +33,14 @@ export default function RootLayout() {
         <Stack.Screen name="auth/signup" />
         <Stack.Screen name="auth/signin" />
         <Stack.Screen name="auth/forgot-password" />
+        <Stack.Screen name="auth/verify" />
+        <Stack.Screen name="auth/reset-password" />
+        <Stack.Screen name="current-user" options={{ gestureEnabled: false }} />
+        <Stack.Screen name="Submit/SubmitAttendance" />
         <Stack.Screen name="(tabs)" />
       </Stack>
       <StatusBar style="auto" />
-      <TranslationToast />
+      <Toast topOffset={60} />
     </ThemeProvider>
   );
 }
