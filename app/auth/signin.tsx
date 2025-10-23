@@ -1,9 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
   ActivityIndicator,
-  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -66,49 +66,27 @@ export default function SigninScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black" edges={["top", "bottom"]}>
-      <View className="flex-1 bg-white">
-        {/* Black Header */}
-        <View
-          className="bg-black px-6 pt-4 pb-8 relative"
-          style={{ minHeight: 200 }}
-        >
-          {/* Decorative LOGIN - Bottom Right */}
-          <View className="absolute bottom-2 right-6">
-            <Text className="text-gray-400 text-7xl font-black tracking-wider opacity-20">
-              LOGIN
-            </Text>
-          </View>
-
-          <View className="flex-row items-center mb-6 z-10 pt-2">
-            <Pressable onPress={() => router.back()} className="mr-4">
-              <Ionicons name="arrow-back" size={24} color="white" />
-            </Pressable>
+    <SafeAreaView className="flex-1 bg-white" edges={["top", "bottom"]}>
+      <StatusBar style="dark" />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <View className="flex-1">
+          {/* Header */}
+          <View className="bg-white px-4 py-3 border-b border-gray-200">
             <View className="flex-row items-center">
-              <Image
-                source={require("../../assets/images/logoWhite.png")}
-                className="w-8 h-8 mr-2"
-                resizeMode="contain"
-              />
-              <Text className="text-white text-lg font-bold">UNITRACK</Text>
+              <Pressable
+                onPress={() => router.back()}
+                className="w-9 h-9 rounded-full bg-gray-100 items-center justify-center mr-3"
+              >
+                <Ionicons name="arrow-back" size={20} color="black" />
+              </Pressable>
+              <Text className="text-black text-lg font-semibold">Sign In</Text>
             </View>
           </View>
 
-          <View className="z-10 pr-8">
-            <Text className="text-white text-2xl font-bold mb-2">
-              {signinTitle}
-            </Text>
-            <Text className="text-white/80 text-sm leading-5">
-              {signinSubtitle}
-            </Text>
-          </View>
-        </View>
-
-        {/* Scrollable Form Section */}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex: 1 }}
-        >
+          {/* Scrollable Form Section */}
           <ScrollView
             className="flex-1"
             contentContainerStyle={{ flexGrow: 1 }}
@@ -117,11 +95,21 @@ export default function SigninScreen() {
           >
             <View className="flex-1 px-6 pt-6 justify-between">
               <View className="flex-1">
+                {/* Welcome Text */}
+                <View className="mb-6">
+                  <Text className="text-black text-2xl font-bold mb-2">
+                    {signinTitle}
+                  </Text>
+                  <Text className="text-gray-600 text-sm leading-5">
+                    {signinSubtitle}
+                  </Text>
+                </View>
+
                 {/* Form Fields */}
-                <View className="flex gap-5">
+                <View className="bg-white rounded-lg border border-gray-200 p-4">
                   {/* Email */}
-                  <View>
-                    <Text className="text-gray-700 text-sm font-medium mb-2 px-1">
+                  <View className="mb-4">
+                    <Text className="text-gray-700 text-sm font-semibold mb-2">
                       {emailLabel}
                     </Text>
                     <TextInput
@@ -130,14 +118,14 @@ export default function SigninScreen() {
                       placeholder="john@university.edu"
                       keyboardType="email-address"
                       autoCapitalize="none"
-                      className="bg-gray-50 rounded-lg px-4 py-3 text-base border border-gray-200"
+                      className="bg-gray-50 rounded-lg px-4 py-3 text-sm border border-gray-200 text-black"
                       placeholderTextColor="#9CA3AF"
                     />
                   </View>
 
                   {/* Password */}
                   <View>
-                    <Text className="text-gray-700 text-sm font-medium mb-2 px-1">
+                    <Text className="text-gray-700 text-sm font-semibold mb-2">
                       {passwordLabel}
                     </Text>
                     <View className="flex-row items-center bg-gray-50 rounded-lg border border-gray-200">
@@ -147,7 +135,7 @@ export default function SigninScreen() {
                         placeholder="••••••••"
                         secureTextEntry={!showPassword}
                         autoCapitalize="none"
-                        className="flex-1 px-4 py-3 text-base"
+                        className="flex-1 px-4 py-3 text-sm text-black"
                         placeholderTextColor="#9CA3AF"
                         style={{ textAlign: "left" }}
                       />
@@ -160,21 +148,21 @@ export default function SigninScreen() {
                       >
                         <Ionicons
                           name={showPassword ? "eye-off" : "eye"}
-                          size={20}
+                          size={18}
                           color="#6B7280"
                         />
                       </Pressable>
                     </View>
                   </View>
-                </View>
 
-                {/* Forgot Password */}
-                <View className="items-end mt-3">
-                  <Pressable onPress={handleForgotPassword}>
-                    <Text className="text-black text-sm font-medium underline">
-                      {forgotPasswordText}
-                    </Text>
-                  </Pressable>
+                  {/* Forgot Password */}
+                  <View className="items-end mt-3">
+                    <Pressable onPress={handleForgotPassword}>
+                      <Text className="text-black text-sm font-semibold">
+                        {forgotPasswordText}
+                      </Text>
+                    </Pressable>
+                  </View>
                 </View>
               </View>
 
@@ -184,7 +172,7 @@ export default function SigninScreen() {
                 <Pressable
                   onPress={handleSignin}
                   disabled={isLoading}
-                  className={`rounded-full py-4 items-center mb-4 flex-row justify-center ${
+                  className={`rounded-lg py-3 items-center mb-4 flex-row justify-center ${
                     isLoading ? "bg-gray-400" : "bg-black"
                   }`}
                 >
@@ -195,7 +183,7 @@ export default function SigninScreen() {
                       style={{ marginRight: 8 }}
                     />
                   )}
-                  <Text className="text-white text-base font-bold tracking-wide">
+                  <Text className="text-white text-sm font-semibold">
                     {isLoading ? "Signing in..." : signinButton}
                   </Text>
                 </Pressable>
@@ -206,7 +194,7 @@ export default function SigninScreen() {
                     {noAccountText}{" "}
                   </Text>
                   <Pressable onPress={() => router.push("/auth/signup")}>
-                    <Text className="text-black text-sm font-bold underline">
+                    <Text className="text-black text-sm font-semibold">
                       {signupText}
                     </Text>
                   </Pressable>
@@ -214,8 +202,8 @@ export default function SigninScreen() {
               </View>
             </View>
           </ScrollView>
-        </KeyboardAvoidingView>
-      </View>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

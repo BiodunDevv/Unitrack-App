@@ -29,15 +29,18 @@ export default function RootLayout() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="welcome" />
-        <Stack.Screen name="auth/index" />
+        <Stack.Screen name="auth/index" options={{ gestureEnabled: false }} />
         <Stack.Screen name="auth/signup" />
         <Stack.Screen name="auth/signin" />
         <Stack.Screen name="auth/forgot-password" />
         <Stack.Screen name="auth/verify" />
         <Stack.Screen name="auth/reset-password" />
         <Stack.Screen name="current-user" options={{ gestureEnabled: false }} />
-        <Stack.Screen name="Submit/SubmitAttendance" />
-        <Stack.Screen name="(tabs)" />
+        <Stack.Screen
+          name="Submit/SubmitAttendance"
+          options={{ gestureEnabled: false }}
+        />
+        <Stack.Screen name="(tabs)" options={{ gestureEnabled: false }} />
       </Stack>
       <StatusBar style="auto" />
       <Toast topOffset={60} />

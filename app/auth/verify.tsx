@@ -1,9 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
-  Image,
   Pressable,
   Text,
   TextInput,
@@ -162,40 +162,20 @@ export default function VerifyScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black" edges={["top", "bottom"]}>
-      <View className="flex-1 bg-white">
-        {/* Black Header */}
-        <View
-          className="bg-black px-6 pt-4 pb-8 relative"
-          style={{ minHeight: 200 }}
-        >
-          {/* Background VERIFY - Bottom Right */}
-          <View className="absolute bottom-2 right-6">
-            <Text className="text-gray-400 text-6xl font-black tracking-wider opacity-20">
-              VERIFY
-            </Text>
-          </View>
-
-          <View className="flex-row items-center mb-6 z-10 pt-2">
-            <Pressable onPress={() => router.back()} className="mr-4">
-              <Ionicons name="arrow-back" size={24} color="white" />
+    <SafeAreaView className="flex-1 bg-white" edges={["top", "bottom"]}>
+      <StatusBar style="dark" />
+      <View className="flex-1">
+        {/* Header */}
+        <View className="bg-white px-4 py-3 border-b border-gray-200">
+          <View className="flex-row items-center">
+            <Pressable
+              onPress={() => router.back()}
+              className="w-9 h-9 rounded-full bg-gray-100 items-center justify-center mr-3"
+            >
+              <Ionicons name="arrow-back" size={20} color="black" />
             </Pressable>
-            <View className="flex-row items-center">
-              <Image
-                source={require("../../assets/images/logoWhite.png")}
-                className="w-8 h-8 mr-2"
-                resizeMode="contain"
-              />
-              <Text className="text-white text-lg font-bold">UNITRACK</Text>
-            </View>
-          </View>
-
-          <View className="z-10 pr-8">
-            <Text className="text-white text-2xl font-bold mb-2">
-              Enter Verification Code
-            </Text>
-            <Text className="text-white/80 text-sm leading-5">
-              We sent a 6-digit code to your email. Enter it below to continue.
+            <Text className="text-black text-lg font-semibold">
+              Verify Code
             </Text>
           </View>
         </View>
@@ -203,23 +183,37 @@ export default function VerifyScreen() {
         {/* Content */}
         <View className="flex-1 px-6 pt-6 justify-between">
           <View>
-            <View className="flex-row justify-between">
-              {code.map((c, i) => (
-                <TextInput
-                  key={i}
-                  ref={inputs[i]}
-                  value={c}
-                  onChangeText={(t) => handleChange(t, i)}
-                  onKeyPress={({ nativeEvent }) => {
-                    if (nativeEvent.key === "Backspace") handleBackspace(i);
-                  }}
-                  keyboardType="number-pad"
-                  maxLength={1}
-                  className="w-12 h-14 text-center text-lg bg-gray-50 rounded-lg border border-gray-200"
-                  placeholder="-"
-                  placeholderTextColor="#9CA3AF"
-                />
-              ))}
+            {/* Welcome Text */}
+            <View className="mb-6">
+              <Text className="text-black text-2xl font-bold mb-2">
+                Enter Verification Code
+              </Text>
+              <Text className="text-gray-600 text-sm leading-5">
+                We sent a 6-digit code to your email. Enter it below to
+                continue.
+              </Text>
+            </View>
+
+            {/* Code Input */}
+            <View className="bg-white rounded-lg border border-gray-200 p-4">
+              <View className="flex-row justify-between">
+                {code.map((c, i) => (
+                  <TextInput
+                    key={i}
+                    ref={inputs[i]}
+                    value={c}
+                    onChangeText={(t) => handleChange(t, i)}
+                    onKeyPress={({ nativeEvent }) => {
+                      if (nativeEvent.key === "Backspace") handleBackspace(i);
+                    }}
+                    keyboardType="number-pad"
+                    maxLength={1}
+                    className="w-11 h-12 text-center text-base bg-gray-50 rounded-lg border border-gray-200 text-black font-semibold"
+                    placeholder="-"
+                    placeholderTextColor="#9CA3AF"
+                  />
+                ))}
+              </View>
             </View>
           </View>
 
@@ -227,7 +221,7 @@ export default function VerifyScreen() {
             <Pressable
               onPress={handleVerify}
               disabled={isLoading}
-              className={`rounded-full py-4 items-center mb-3 flex-row justify-center ${
+              className={`rounded-lg py-3 items-center mb-3 flex-row justify-center ${
                 isLoading ? "bg-gray-400" : "bg-black"
               }`}
             >
@@ -238,7 +232,7 @@ export default function VerifyScreen() {
                   style={{ marginRight: 8 }}
                 />
               )}
-              <Text className="text-white text-base font-bold tracking-wide">
+              <Text className="text-white text-sm font-semibold">
                 {isLoading ? "Verifying..." : "Verify Code"}
               </Text>
             </Pressable>
@@ -248,7 +242,7 @@ export default function VerifyScreen() {
               className="items-center"
             >
               <Text
-                className={`text-sm font-medium underline ${
+                className={`text-sm font-semibold ${
                   countdown > 0 ? "text-gray-400" : "text-black"
                 }`}
               >

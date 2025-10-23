@@ -1,6 +1,7 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,7 +10,6 @@ export default function AuthScreen() {
   const router = useRouter();
 
   // Static English text
-  const welcomeTitle = "WELCOME TO UNITRACK";
   const welcomeSubtitle = "Smart Attendance Management System for Universities";
   const signupText = "Create Account";
   const signinText = "Sign In";
@@ -44,52 +44,35 @@ export default function AuthScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black" edges={["top", "bottom"]}>
+    <SafeAreaView className="flex-1 bg-white" edges={["top", "bottom"]}>
+      <StatusBar style="dark" />
       <View className="flex-1">
-        {/* Top Bar (language removed) */}
-        <View className="px-6 pt-4 pb-2" />
-
-        {/* Black Background Section with Logo */}
-        <View
-          className="items-center justify-center px-6"
-          style={{ minHeight: 300 }}
-        >
-          <View className="w-36 h-36 items-center justify-center mb-4">
+        {/* Logo Section */}
+        <View className="items-center justify-center px-6 pt-12 pb-8">
+          <View className="w-24 h-24 items-center justify-center mb-6">
             <Image
-              source={require("../../assets/images/logoWhite.png")}
-              className="w-32 h-32"
+              source={require("../../assets/images/logoDark.png")}
+              className="w-20 h-20"
               resizeMode="contain"
             />
           </View>
-          <Text className="text-white text-2xl font-bold mb-2 text-center">
-            {welcomeTitle}
+          <Text className="text-black text-3xl font-bold mb-2 text-center">
+            UNITRACK
           </Text>
-          <Text className="text-white/80 text-sm leading-5 text-center">
+          <Text className="text-gray-600 text-sm leading-5 text-center px-4">
             {welcomeSubtitle}
           </Text>
         </View>
 
-        {/* UNITRACK Text Above White Card */}
-        <View
-          className="items-center shadow-lg mb-4"
-          style={{ marginBottom: -18, zIndex: 10 }}
-        >
-          <View className="bg-black px-8 py-2 rounded-full">
-            <Text className="text-white text-xl font-bold tracking-wider">
-              UNITRACK
-            </Text>
-          </View>
-        </View>
-
-        {/* White Bottom Card */}
-        <View className="bg-white rounded-t-[40px] pt-10 pb-8 px-8 flex-1">
-          <View className="flex-1 justify-between">
+        {/* Main Content Card */}
+        <View className="flex-1 px-6">
+          <View className="bg-white rounded-lg border border-gray-200 p-6">
             {/* Info Banner - Students Don't Need Account */}
-            <View className="bg-gray-50 rounded-2xl p-4 flex-row items-start border border-gray-200 mb-2">
-              <View className="w-10 h-10 rounded-full bg-gray-800 items-center justify-center mr-3 mt-0.5">
-                <Ionicons name="information" size={20} color="white" />
+            <View className="bg-blue-50 rounded-lg p-4 flex-row items-start border border-blue-200 mb-6">
+              <View className="w-8 h-8 rounded-full bg-blue-100 items-center justify-center mr-3">
+                <Ionicons name="information" size={18} color="#2563EB" />
               </View>
-              <Text className="flex-1 text-gray-700 text-xs font-medium leading-5">
+              <Text className="flex-1 text-blue-800 text-xs leading-5">
                 {infoText}
               </Text>
             </View>
@@ -99,15 +82,15 @@ export default function AuthScreen() {
               {/* Sign In Button - Primary */}
               <Pressable
                 onPress={handleSignin}
-                className="bg-black rounded-full py-4 mb-3 flex-row items-center justify-center shadow-sm"
+                className="bg-black rounded-lg py-3 mb-3 flex-row items-center justify-center"
               >
                 <MaterialIcons
                   name="login"
-                  size={20}
+                  size={18}
                   color="white"
-                  style={{ marginRight: 10 }}
+                  style={{ marginRight: 8 }}
                 />
-                <Text className="text-white text-base font-bold">
+                <Text className="text-white text-sm font-semibold">
                   {signinText}
                 </Text>
               </Pressable>
@@ -115,53 +98,53 @@ export default function AuthScreen() {
               {/* Create Account Button */}
               <Pressable
                 onPress={handleSignup}
-                className="bg-white rounded-full py-4 mb-3 flex-row items-center justify-center border-2 border-gray-300"
+                className="bg-white rounded-lg py-3 mb-3 flex-row items-center justify-center border border-gray-300"
               >
                 <Ionicons
                   name="person-add"
-                  size={20}
+                  size={18}
                   color="#000"
-                  style={{ marginRight: 10 }}
+                  style={{ marginRight: 8 }}
                 />
-                <Text className="text-gray-900 text-base font-bold">
+                <Text className="text-gray-900 text-sm font-semibold">
                   {signupText}
                 </Text>
               </Pressable>
 
               {/* Divider */}
               <View className="flex-row items-center my-4">
-                <View className="flex-1 h-px bg-gray-300" />
-                <Text className="px-4 text-gray-500 text-xs font-medium uppercase">
+                <View className="flex-1 h-px bg-gray-200" />
+                <Text className="px-3 text-gray-500 text-xs font-medium">
                   OR
                 </Text>
-                <View className="flex-1 h-px bg-gray-300" />
+                <View className="flex-1 h-px bg-gray-200" />
               </View>
 
-              {/* Quick Attendance Button - Accent */}
+              {/* Quick Attendance Button */}
               <Pressable
                 onPress={handleQuickAttendance}
-                className="bg-black rounded-full py-4 mb-4 flex-row items-center justify-center shadow-sm"
+                className="bg-gray-100 rounded-lg py-3 flex-row items-center justify-center border border-gray-200"
               >
                 <Ionicons
                   name="flash"
-                  size={20}
-                  color="white"
-                  style={{ marginRight: 10 }}
+                  size={18}
+                  color="#000"
+                  style={{ marginRight: 8 }}
                 />
-                <Text className="text-white text-center text-base font-bold">
+                <Text className="text-black text-center text-sm font-semibold">
                   {quickAttendanceBtnText}
                 </Text>
               </Pressable>
 
               {/* Terms and Privacy */}
-              <View className="items-center px-2 mt-2">
+              <View className="items-center px-2 mt-6">
                 <Text className="text-gray-500 text-xs text-center leading-5">
                   {termsText}{" "}
-                  <Text className="text-gray-800 font-semibold">
+                  <Text className="text-gray-900 font-semibold">
                     {userAgreementText}
                   </Text>{" "}
                   {andText}{" "}
-                  <Text className="text-gray-800 font-semibold">
+                  <Text className="text-gray-900 font-semibold">
                     {privacyPolicyText}
                   </Text>
                 </Text>
@@ -169,6 +152,9 @@ export default function AuthScreen() {
             </View>
           </View>
         </View>
+
+        {/* Bottom Spacing */}
+        <View className="h-8" />
       </View>
     </SafeAreaView>
   );

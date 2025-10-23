@@ -1,9 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
   ActivityIndicator,
-  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -106,49 +106,29 @@ export default function SignupScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black" edges={["top", "bottom"]}>
-      <View className="flex-1 bg-white">
-        {/* Black Header */}
-        <View
-          className="bg-black px-6 pt-4 pb-8 relative"
-          style={{ minHeight: 200 }}
-        >
-          {/* Background Join Text - Bottom Right */}
-          <View className="absolute bottom-2 right-6">
-            <Text className="text-gray-400 text-7xl font-black tracking-wider opacity-20">
-              JOIN
-            </Text>
-          </View>
-
-          <View className="flex-row items-center mb-6 z-10 pt-2">
-            <Pressable onPress={() => router.back()} className="mr-4">
-              <Ionicons name="arrow-back" size={24} color="white" />
-            </Pressable>
+    <SafeAreaView className="flex-1 bg-white" edges={["top", "bottom"]}>
+      <StatusBar style="dark" />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <View className="flex-1">
+          {/* Header */}
+          <View className="bg-white px-4 py-3 border-b border-gray-200">
             <View className="flex-row items-center">
-              <Image
-                source={require("../../assets/images/logoWhite.png")}
-                className="w-8 h-8 mr-2"
-                resizeMode="contain"
-              />
-              <Text className="text-white text-lg font-bold">UNITRACK</Text>
+              <Pressable
+                onPress={() => router.back()}
+                className="w-9 h-9 rounded-full bg-gray-100 items-center justify-center mr-3"
+              >
+                <Ionicons name="arrow-back" size={20} color="black" />
+              </Pressable>
+              <Text className="text-black text-lg font-semibold">
+                Create Account
+              </Text>
             </View>
           </View>
 
-          <View className="z-10 pr-8">
-            <Text className="text-white text-2xl font-bold mb-2">
-              {signupTitle}
-            </Text>
-            <Text className="text-white/80 text-sm leading-5">
-              {signupSubtitle}
-            </Text>
-          </View>
-        </View>
-
-        {/* Scrollable Form Section */}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex: 1 }}
-        >
+          {/* Scrollable Form Section */}
           <ScrollView
             className="flex-1"
             contentContainerStyle={{ flexGrow: 1 }}
@@ -157,39 +137,49 @@ export default function SignupScreen() {
           >
             <View className="flex-1 px-6 pt-6 justify-between">
               <View className="flex-1">
+                {/* Welcome Text */}
+                <View className="mb-6">
+                  <Text className="text-black text-2xl font-bold mb-2">
+                    {signupTitle}
+                  </Text>
+                  <Text className="text-gray-600 text-sm leading-5">
+                    {signupSubtitle}
+                  </Text>
+                </View>
+
                 {/* Form Fields */}
-                <View className="flex gap-3">
+                <View className="bg-white rounded-lg border border-gray-200 p-4">
                   {/* First Name */}
-                  <View>
-                    <Text className="text-gray-700 text-sm font-medium mb-2 px-1">
+                  <View className="mb-4">
+                    <Text className="text-gray-700 text-sm font-semibold mb-2">
                       {firstNameLabel}
                     </Text>
                     <TextInput
                       value={firstName}
                       onChangeText={setFirstName}
                       placeholder="John"
-                      className="bg-gray-50 rounded-lg px-4 py-3 text-base border border-gray-200"
+                      className="bg-gray-50 rounded-lg px-4 py-3 text-sm border border-gray-200 text-black"
                       placeholderTextColor="#9CA3AF"
                     />
                   </View>
 
                   {/* Last Name */}
-                  <View>
-                    <Text className="text-gray-700 text-sm font-medium mb-2 px-1">
+                  <View className="mb-4">
+                    <Text className="text-gray-700 text-sm font-semibold mb-2">
                       {lastNameLabel}
                     </Text>
                     <TextInput
                       value={lastName}
                       onChangeText={setLastName}
                       placeholder="Doe"
-                      className="bg-gray-50 rounded-lg px-4 py-3 text-base border border-gray-200"
+                      className="bg-gray-50 rounded-lg px-4 py-3 text-sm border border-gray-200 text-black"
                       placeholderTextColor="#9CA3AF"
                     />
                   </View>
 
                   {/* Email */}
-                  <View>
-                    <Text className="text-gray-700 text-sm font-medium mb-2 px-1">
+                  <View className="mb-4">
+                    <Text className="text-gray-700 text-sm font-semibold mb-2">
                       {emailLabel}
                     </Text>
                     <TextInput
@@ -198,14 +188,14 @@ export default function SignupScreen() {
                       placeholder="john@university.edu"
                       keyboardType="email-address"
                       autoCapitalize="none"
-                      className="bg-gray-50 rounded-lg px-4 py-3 text-base border border-gray-200"
+                      className="bg-gray-50 rounded-lg px-4 py-3 text-sm border border-gray-200 text-black"
                       placeholderTextColor="#9CA3AF"
                     />
                   </View>
 
                   {/* Password */}
                   <View>
-                    <Text className="text-gray-700 text-sm font-medium mb-2 px-1">
+                    <Text className="text-gray-700 text-sm font-semibold mb-2">
                       {passwordLabel}
                     </Text>
                     <View className="flex-row items-center bg-gray-50 rounded-lg border border-gray-200">
@@ -215,7 +205,7 @@ export default function SignupScreen() {
                         placeholder="••••••••"
                         secureTextEntry={!showPassword}
                         autoCapitalize="none"
-                        className="flex-1 px-4 py-3 text-base"
+                        className="flex-1 px-4 py-3 text-sm text-black"
                         placeholderTextColor="#9CA3AF"
                         style={{ textAlign: "left" }}
                       />
@@ -225,44 +215,44 @@ export default function SignupScreen() {
                       >
                         <Ionicons
                           name={showPassword ? "eye-off" : "eye"}
-                          size={20}
+                          size={18}
                           color="#6B7280"
                         />
                       </Pressable>
                     </View>
                   </View>
-                </View>
 
-                {/* Password Hint */}
-                <Text className="text-gray-500 text-xs mt-2 px-1 leading-4">
-                  {passwordHint}
-                </Text>
+                  {/* Password Hint */}
+                  <Text className="text-gray-500 text-xs mt-2 leading-4">
+                    {passwordHint}
+                  </Text>
 
-                {/* Terms Agreement */}
-                <View className="flex-row items-start mt-4">
-                  <Pressable
-                    onPress={() => setAgreeToTerms(!agreeToTerms)}
-                    className="mr-3 mt-0.5"
-                  >
-                    <View
-                      className={`w-5 h-5 border-2 ${agreeToTerms ? "bg-black border-black" : "border-gray-400"} rounded-sm items-center justify-center`}
+                  {/* Terms Agreement */}
+                  <View className="flex-row items-start mt-4">
+                    <Pressable
+                      onPress={() => setAgreeToTerms(!agreeToTerms)}
+                      className="mr-3 mt-0.5"
                     >
-                      {agreeToTerms && (
-                        <Ionicons name="checkmark" size={12} color="white" />
-                      )}
-                    </View>
-                  </Pressable>
-                  <View className="flex-1">
-                    <Text className="text-gray-700 text-xs leading-4">
-                      {agreeText}{" "}
-                      <Text className="text-black underline font-medium">
-                        {termsText}
-                      </Text>{" "}
-                      {andText}{" "}
-                      <Text className="text-black underline font-medium">
-                        {privacyText}
+                      <View
+                        className={`w-5 h-5 border-2 ${agreeToTerms ? "bg-black border-black" : "border-gray-400"} rounded items-center justify-center`}
+                      >
+                        {agreeToTerms && (
+                          <Ionicons name="checkmark" size={12} color="white" />
+                        )}
+                      </View>
+                    </Pressable>
+                    <View className="flex-1">
+                      <Text className="text-gray-700 text-xs leading-4">
+                        {agreeText}{" "}
+                        <Text className="text-black font-semibold">
+                          {termsText}
+                        </Text>{" "}
+                        {andText}{" "}
+                        <Text className="text-black font-semibold">
+                          {privacyText}
+                        </Text>
                       </Text>
-                    </Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -273,7 +263,7 @@ export default function SignupScreen() {
                 <Pressable
                   onPress={handleSignup}
                   disabled={!agreeToTerms || isLoading}
-                  className={`${agreeToTerms && !isLoading ? "bg-black" : "bg-gray-400"} rounded-full py-4 items-center mb-4 flex-row justify-center`}
+                  className={`${agreeToTerms && !isLoading ? "bg-black" : "bg-gray-400"} rounded-lg py-3 items-center mb-4 flex-row justify-center`}
                 >
                   {isLoading && (
                     <ActivityIndicator
@@ -282,7 +272,7 @@ export default function SignupScreen() {
                       style={{ marginRight: 8 }}
                     />
                   )}
-                  <Text className="text-white text-base font-bold tracking-wide">
+                  <Text className="text-white text-sm font-semibold">
                     {isLoading ? "Creating account..." : createAccountButton}
                   </Text>
                 </Pressable>
@@ -293,7 +283,7 @@ export default function SignupScreen() {
                     {haveAccountText}{" "}
                   </Text>
                   <Pressable onPress={() => router.push("/auth/signin")}>
-                    <Text className="text-black text-sm font-bold underline">
+                    <Text className="text-black text-sm font-semibold">
                       {signinText}
                     </Text>
                   </Pressable>
@@ -301,8 +291,8 @@ export default function SignupScreen() {
               </View>
             </View>
           </ScrollView>
-        </KeyboardAvoidingView>
-      </View>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
