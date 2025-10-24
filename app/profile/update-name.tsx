@@ -104,22 +104,27 @@ export default function UpdateName() {
 
   if (isLoading && !profile) {
     return (
-      <SafeAreaView className="flex-1 bg-white items-center justify-center">
-        <ActivityIndicator size="large" color="#000000" />
-        <Text className="text-gray-700 mt-4 font-medium">Loading...</Text>
-      </SafeAreaView>
+      <View className="flex-1">
+        <SafeAreaView className="bg-white" edges={["top"]} />
+        <View className="flex-1 bg-white items-center justify-center">
+          <ActivityIndicator size="large" color="#000000" />
+          <Text className="text-gray-700 mt-4 font-medium">Loading...</Text>
+        </View>
+        <SafeAreaView className="bg-black" edges={["bottom"]} />
+      </View>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50" edges={["top", "bottom"]}>
+    <View className="flex-1">
+      <SafeAreaView className="bg-white" edges={["top"]} />
       <StatusBar style="dark" />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View className="flex-1">
+          <View className="flex-1 bg-gray-50">
             {/* Header */}
             <View className="bg-white px-6 py-4 border-b border-gray-200">
               <View className="flex-row items-center">
@@ -246,6 +251,7 @@ export default function UpdateName() {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+      <SafeAreaView className="bg-black" edges={["bottom"]} />
+    </View>
   );
 }
