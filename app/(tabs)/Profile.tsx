@@ -88,7 +88,7 @@ export default function Profile() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50" edges={["top"]}>
+    <SafeAreaView className="flex-1 bg-white" edges={["top"]}>
       <StatusBar style="dark" />
       <ScrollView
         className="flex-1"
@@ -318,22 +318,6 @@ export default function Profile() {
           </Pressable>
 
           <View className="h-px bg-gray-100 ml-12 my-1" />
-
-          <Pressable className="flex-row items-center py-3 active:bg-gray-50 rounded-lg">
-            <View className="w-9 h-9 rounded-full bg-gray-200 items-center justify-center mr-3">
-              <Ionicons
-                name="notifications-outline"
-                size={20}
-                color="#000000"
-              />
-            </View>
-            <View className="flex-1">
-              <Text className="text-gray-900 text-base font-medium">
-                Notifications
-              </Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
-          </Pressable>
 
           <View className="h-px bg-gray-100 ml-12 my-1" />
 

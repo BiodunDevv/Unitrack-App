@@ -183,7 +183,7 @@ export default function UpdatePassword() {
   ];
 
   return (
-    <SafeAreaView className="flex-1 bg-white" edges={["top", "bottom"]}>
+    <SafeAreaView className="flex-1 bg-gray-50" edges={["top", "bottom"]}>
       <StatusBar style="dark" />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -192,19 +192,18 @@ export default function UpdatePassword() {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View className="flex-1">
             {/* Header */}
-            <View className="px-6 pt-4 pb-6 border-b border-gray-100">
-              <Pressable
-                onPress={() => router.back()}
-                className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center mb-4 active:bg-gray-200"
-              >
-                <Ionicons name="arrow-back" size={22} color="#000000" />
-              </Pressable>
-              <Text className="text-black text-3xl font-bold mb-2">
-                Update Password
-              </Text>
-              <Text className="text-gray-600 text-base">
-                Change your account password
-              </Text>
+            <View className="bg-white px-6 py-4 border-b border-gray-200">
+              <View className="flex-row items-center">
+                <Pressable
+                  onPress={() => router.back()}
+                  className="mr-4 active:opacity-70"
+                >
+                  <Ionicons name="arrow-back" size={24} color="#000000" />
+                </Pressable>
+                <Text className="text-black text-xl font-bold">
+                  Update Password
+                </Text>
+              </View>
             </View>
 
             <ScrollView
@@ -213,21 +212,24 @@ export default function UpdatePassword() {
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
             >
-              <View className="flex-1 px-6 pt-6 pb-6">
+              <View className="flex-1 p-4 pb-6">
                 {/* Current Password */}
-                <View className="mb-5">
-                  <Text className="text-black text-base font-bold mb-3">
+                <View className="bg-white rounded-lg p-4 mb-3 border border-gray-200">
+                  <Text className="text-gray-500 text-xs font-medium mb-3 uppercase">
                     Current Password
                   </Text>
-                  <View className="bg-white border-2 border-gray-200 rounded-2xl px-4 py-4 flex-row items-center">
-                    <Ionicons name="lock-closed" size={20} color="#000000" />
+                  <View className="bg-gray-50 rounded-lg px-4 py-3 flex-row items-center border border-gray-200">
+                    <Ionicons name="lock-closed" size={18} color="#6B7280" />
                     <TextInput
                       value={passwordForm.currentPassword}
                       onChangeText={(text) =>
-                        setPasswordForm({ ...passwordForm, currentPassword: text })
+                        setPasswordForm({
+                          ...passwordForm,
+                          currentPassword: text,
+                        })
                       }
                       placeholder="Enter current password"
-                      className="flex-1 ml-3 text-base text-black font-medium"
+                      className="flex-1 ml-3 text-base text-black"
                       placeholderTextColor="#9CA3AF"
                       secureTextEntry={!showPasswords.current}
                       editable={!isUpdating}
@@ -236,7 +238,7 @@ export default function UpdatePassword() {
                     />
                     <Pressable
                       onPress={() => togglePasswordVisibility("current")}
-                      className="p-2"
+                      className="ml-2 active:opacity-70"
                     >
                       <Ionicons
                         name={showPasswords.current ? "eye-off" : "eye"}
@@ -248,19 +250,19 @@ export default function UpdatePassword() {
                 </View>
 
                 {/* New Password */}
-                <View className="mb-5">
-                  <Text className="text-black text-base font-bold mb-3">
+                <View className="bg-white rounded-lg p-4 mb-3 border border-gray-200">
+                  <Text className="text-gray-500 text-xs font-medium mb-3 uppercase">
                     New Password
                   </Text>
-                  <View className="bg-white border-2 border-gray-200 rounded-2xl px-4 py-4 flex-row items-center">
-                    <Ionicons name="key" size={20} color="#000000" />
+                  <View className="bg-gray-50 rounded-lg px-4 py-3 flex-row items-center border border-gray-200">
+                    <Ionicons name="key" size={18} color="#6B7280" />
                     <TextInput
                       value={passwordForm.newPassword}
                       onChangeText={(text) =>
                         setPasswordForm({ ...passwordForm, newPassword: text })
                       }
                       placeholder="Enter new password"
-                      className="flex-1 ml-3 text-base text-black font-medium"
+                      className="flex-1 ml-3 text-base text-black"
                       placeholderTextColor="#9CA3AF"
                       secureTextEntry={!showPasswords.new}
                       editable={!isUpdating}
@@ -269,7 +271,7 @@ export default function UpdatePassword() {
                     />
                     <Pressable
                       onPress={() => togglePasswordVisibility("new")}
-                      className="p-2"
+                      className="ml-2 active:opacity-70"
                     >
                       <Ionicons
                         name={showPasswords.new ? "eye-off" : "eye"}
@@ -283,17 +285,17 @@ export default function UpdatePassword() {
                   {passwordForm.newPassword.length > 0 && (
                     <View className="mt-3">
                       <View className="flex-row justify-between items-center mb-2">
-                        <Text className="text-gray-600 text-sm font-medium">
+                        <Text className="text-gray-600 text-xs font-medium">
                           Password Strength
                         </Text>
                         <Text
-                          className="text-sm font-bold"
+                          className="text-xs font-semibold"
                           style={{ color: passwordStrength.color }}
                         >
                           {passwordStrength.strength}
                         </Text>
                       </View>
-                      <View className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <View className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                         <View
                           className="h-full rounded-full transition-all"
                           style={{
@@ -307,19 +309,26 @@ export default function UpdatePassword() {
                 </View>
 
                 {/* Confirm Password */}
-                <View className="mb-6">
-                  <Text className="text-black text-base font-bold mb-3">
+                <View className="bg-white rounded-lg p-4 mb-3 border border-gray-200">
+                  <Text className="text-gray-500 text-xs font-medium mb-3 uppercase">
                     Confirm New Password
                   </Text>
-                  <View className="bg-white border-2 border-gray-200 rounded-2xl px-4 py-4 flex-row items-center">
-                    <Ionicons name="checkmark-circle" size={20} color="#000000" />
+                  <View className="bg-gray-50 rounded-lg px-4 py-3 flex-row items-center border border-gray-200">
+                    <Ionicons
+                      name="checkmark-circle"
+                      size={18}
+                      color="#6B7280"
+                    />
                     <TextInput
                       value={passwordForm.confirmPassword}
                       onChangeText={(text) =>
-                        setPasswordForm({ ...passwordForm, confirmPassword: text })
+                        setPasswordForm({
+                          ...passwordForm,
+                          confirmPassword: text,
+                        })
                       }
                       placeholder="Confirm new password"
-                      className="flex-1 ml-3 text-base text-black font-medium"
+                      className="flex-1 ml-3 text-base text-black"
                       placeholderTextColor="#9CA3AF"
                       secureTextEntry={!showPasswords.confirm}
                       editable={!isUpdating}
@@ -328,7 +337,7 @@ export default function UpdatePassword() {
                     />
                     <Pressable
                       onPress={() => togglePasswordVisibility("confirm")}
-                      className="p-2"
+                      className="ml-2 active:opacity-70"
                     >
                       <Ionicons
                         name={showPasswords.confirm ? "eye-off" : "eye"}
@@ -338,39 +347,40 @@ export default function UpdatePassword() {
                     </Pressable>
                   </View>
                   {passwordForm.confirmPassword.length > 0 &&
-                    passwordForm.newPassword !== passwordForm.confirmPassword && (
-                      <Text className="text-red-600 text-sm mt-2 font-medium">
+                    passwordForm.newPassword !==
+                      passwordForm.confirmPassword && (
+                      <Text className="text-red-600 text-xs mt-2">
                         Passwords do not match
                       </Text>
                     )}
                 </View>
 
                 {/* Password Requirements */}
-                <View className="bg-gray-50 rounded-2xl p-5 border border-gray-100 mb-6">
-                  <View className="flex-row items-start mb-3">
-                    <View className="w-10 h-10 rounded-xl bg-black items-center justify-center mr-3">
-                      <Ionicons name="shield-checkmark" size={20} color="white" />
-                    </View>
-                    <View className="flex-1">
-                      <Text className="text-black text-sm font-bold mb-1">
-                        Password Requirements
-                      </Text>
-                      <Text className="text-gray-600 text-xs">
-                        Your password must meet the following criteria
-                      </Text>
-                    </View>
+                <View className="bg-white rounded-lg p-4 border border-gray-200 mb-3">
+                  <View className="flex-row items-center mb-3">
+                    <Ionicons
+                      name="shield-checkmark"
+                      size={20}
+                      color="#000000"
+                    />
+                    <Text className="text-black text-sm font-semibold ml-2">
+                      Password Requirements
+                    </Text>
                   </View>
-                  <View className="space-y-2">
+                  <View>
                     {passwordChecks.map((check, index) => (
-                      <View key={index} className="flex-row items-center py-1">
+                      <View
+                        key={index}
+                        className="flex-row items-center py-1.5"
+                      >
                         <View
-                          className={`w-5 h-5 rounded-full items-center justify-center mr-3 ${
+                          className={`w-4 h-4 rounded-full items-center justify-center mr-3 ${
                             check.met ? "bg-green-500" : "bg-gray-300"
                           }`}
                         >
                           <Ionicons
                             name={check.met ? "checkmark" : "close"}
-                            size={12}
+                            size={10}
                             color="white"
                           />
                         </View>
@@ -392,7 +402,7 @@ export default function UpdatePassword() {
                 <View className="flex-1" />
 
                 {/* Action Buttons */}
-                <View className="pt-6 pb-4">
+                <View className="pt-6">
                   {/* Update Button */}
                   <Pressable
                     onPress={handleUpdatePassword}
@@ -410,15 +420,8 @@ export default function UpdatePassword() {
                       !passwordForm.confirmPassword ||
                       passwordForm.newPassword !== passwordForm.confirmPassword
                         ? "bg-gray-300"
-                        : "bg-black"
-                    } rounded-2xl py-4 items-center mb-3 flex-row justify-center`}
-                    style={{
-                      shadowColor: "#000",
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowOpacity: 0.1,
-                      shadowRadius: 8,
-                      elevation: 3,
-                    }}
+                        : "bg-black active:bg-gray-800"
+                    } rounded-lg py-3.5 items-center mb-2 flex-row justify-center`}
                   >
                     {isUpdating && (
                       <ActivityIndicator
@@ -427,13 +430,7 @@ export default function UpdatePassword() {
                         style={{ marginRight: 8 }}
                       />
                     )}
-                    <Ionicons
-                      name="shield-checkmark"
-                      size={22}
-                      color="white"
-                      style={{ marginRight: 8 }}
-                    />
-                    <Text className="text-white text-base font-bold">
+                    <Text className="text-white text-base font-semibold">
                       {isUpdating ? "Updating..." : "Update Password"}
                     </Text>
                   </Pressable>
@@ -442,7 +439,7 @@ export default function UpdatePassword() {
                   <Pressable
                     onPress={() => router.back()}
                     disabled={isUpdating}
-                    className="bg-gray-100 rounded-2xl py-4 items-center active:bg-gray-200"
+                    className="bg-white rounded-lg py-3.5 items-center border border-gray-300 active:bg-gray-50"
                   >
                     <Text className="text-black text-base font-semibold">
                       Cancel

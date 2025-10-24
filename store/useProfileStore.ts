@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 const API_BASE_URL =
   process.env.EXPO_PUBLIC_API_URL ||
-  "https://unitrack-backend-hd9s.onrender.com";
+  "https://localhost:3000";
 
 // Types
 interface ProfileData {

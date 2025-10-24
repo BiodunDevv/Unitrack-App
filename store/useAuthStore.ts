@@ -4,7 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 const API_BASE_URL =
   process.env.EXPO_PUBLIC_API_URL ||
-  "https://unitrack-backend-hd9s.onrender.com";
+  "https://localhost:3000";
 
 // Types
 interface User {

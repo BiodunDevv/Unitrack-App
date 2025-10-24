@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-const API_BASE_URL = "https://unitrack-backend-hd9s.onrender.com/api";
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || "https://localhost:3000";
 
 // Function to get auth token from AsyncStorage
 const getAuthToken = async (): Promise<string | null> => {
